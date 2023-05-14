@@ -9,5 +9,5 @@ const CartModelSchema = new mongoose_1.default.Schema({
     cartId: String,
     item: Product_1.default.schema,
 });
-const CartModel = mongoose_1.default.model("CartModel", CartModelSchema);
-exports.default = CartModel;
+const Cart = mongoose_1.default.model("Cart", CartModelSchema);
+exports.default = Cart;

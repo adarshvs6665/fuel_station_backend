@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { cartData } from "../data/data";
 import { v4 as uuidv4 } from "uuid";
-import CartModel from "../models/Cart";
-import ProductModel from "../models/Product";
+import Cart from "../models/Cart";
+import Product from "../models/Product";
 import { IResponse } from "../Interfaces/IResponse";
 
 type cartDataItem = {
@@ -36,11 +36,11 @@ export const cartUpdateController = async (req: Request, res: Response) => {
 
     // console.log(cartData);
 
-    const cartDataExists = await CartModel.findOne({ "item.name": data!.name });
+    const cartDataExists = await Cart.findOne({ "item.name": data!.name });
     if (!cartDataExists) {
-        const cartItem = new CartModel({
+        const cartItem = new Cart({
             cartId: uuidv4(),
-            item: new ProductModel({
+            item: new Product({
                 ...data,
             }),
         });
@@ -62,7 +62,7 @@ export const cartUpdateController = async (req: Request, res: Response) => {
 export const cartFetchController = async (req: Request, res: Response) => {
     console.log(cartData);
 
-    CartModel.find({})
+    Cart.find({})
         .then((cartData) => {
             console.log(cartData);
             const response: IResponse = {

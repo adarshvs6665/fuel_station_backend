@@ -14,5 +14,5 @@ const ProductModelSchema = new mongoose_1.default.Schema({
     value: Number,
     quantity: String,
 });
-const ProductModel = mongoose_1.default.model('ProductModel', ProductModelSchema);
-exports.default = ProductModel;
+const Product = mongoose_1.default.model('Product', ProductModelSchema);
+exports.default = Product;
