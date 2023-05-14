@@ -8,7 +8,7 @@ const ProductModelSchema = new mongoose.Schema({
   review: Number,
   star: Number,
   value: Number,
-  quantity: Number,
+  quantity: String,
 });
 
 const ProductModel = mongoose.model('ProductModel', ProductModelSchema);

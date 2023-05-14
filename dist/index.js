@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
-const router_1 = __importDefault(require("./api/v1/routes/router"));
+const router_1 = require("./api/v1/routes/router");
 const db_1 = require("./api/v1/db/db");
 //configure env variables
 dotenv_1.default.config();
@@ -17,7 +17,10 @@ app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: "*",
 }));
-app.use("/api/v1/", router_1.default);
+app.use("/api/v1/common", router_1.commonRouter);
+app.use("/api/v1/user", router_1.userRouter);
+app.use("/api/v1/pump", router_1.pumpRouter);
+app.use("/api/v1/delivery", router_1.deliveryRouter);
 app.listen(PORT, () => {
     console.log(`⚡️ [server]: Server is running at http://localhost:${PORT}`);
     (0, db_1.dbConnection)();

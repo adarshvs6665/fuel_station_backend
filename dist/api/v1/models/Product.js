@@ -12,7 +12,7 @@ const ProductModelSchema = new mongoose_1.default.Schema({
     review: Number,
     star: Number,
     value: Number,
-    quantity: Number,
+    quantity: String,
 });
 const ProductModel = mongoose_1.default.model('ProductModel', ProductModelSchema);
 exports.default = ProductModel;

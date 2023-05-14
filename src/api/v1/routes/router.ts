@@ -19,42 +19,43 @@ import {
     deliveryBoyCreateController,
 } from "../controllers/deliveryController";
 
-const defaultRouter = express.Router();
+// for routing user APIs
+export const userRouter = express.Router();
 
-defaultRouter.get("/order", orderController);
+// for routing common APIs
+export const commonRouter = express.Router();
 
-defaultRouter.get("/cart", cartFetchController);
+// for routing pump APIs
+export const pumpRouter = express.Router();
 
-defaultRouter.post("/cart", cartUpdateController);
+// for routing deliveryBoy APIs
+export const deliveryRouter = express.Router();
+
+
 
 // user routes
-// user create
-defaultRouter.post("/create-user", userCreateController);
-// user login
-defaultRouter.post("/login", userAuthenticateController);
+userRouter.get("/order", orderController);
+userRouter.get("/cart", cartFetchController);
+userRouter.post("/cart", cartUpdateController);
+userRouter.post("/create-user", userCreateController);
+userRouter.post("/login", userAuthenticateController);
 
-// pump owner routes
-defaultRouter.post("/create-pump-owner", pumpOwnerCreateController);
-// user login
-defaultRouter.post("/pump-owner-login", pumpOwnerAuthenticateController);
+// pump routes
+pumpRouter.post("/create-pump-owner", pumpOwnerCreateController);
+pumpRouter.post("/pump-owner-login", pumpOwnerAuthenticateController);
 
-// pump owner routes
-defaultRouter.post("/create-delivery-boy", deliveryBoyCreateController);
-// user login
-defaultRouter.post("/delivery-boy-login", deliveryBoyAuthenticateController);
+// delivery routes
+deliveryRouter.post("/create-delivery-boy", deliveryBoyCreateController);
+deliveryRouter.post("/delivery-boy-login", deliveryBoyAuthenticateController);
 
 // development purpose
-defaultRouter.delete("/reset-cart", (req, res) => {
+commonRouter.post("/default", defaultController);
+commonRouter.delete("/reset-cart", (req, res) => {
     console.log(cartData);
     cartData.splice(0, cartData.length);
     console.log(cartData);
     res.send("deleted");
 });
 
-// development purpose
-defaultRouter.post("/default", defaultController);
-
 // defaultRouter.get("/cart")
 
-//exporting router
-export default defaultRouter;
