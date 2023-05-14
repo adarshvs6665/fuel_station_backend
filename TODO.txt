@@ -1,0 +1,30 @@
+login
+create user  // 
+get user // 
+
+409 code for duplicate data
+400 for failed reponse
+500 internal error
+
+basemodel 
+    id
+    imageUrl
+    name
+    price
+    review
+    star
+    value       !
+    quantity    !
+
+ordersModel
+    orderId
+    baseModel : model containing data
+
+cartModel 
+    baseModel : model containing data
+
+
+status :
+    pending to accept 
+    out for delivery 
+    delivered 
