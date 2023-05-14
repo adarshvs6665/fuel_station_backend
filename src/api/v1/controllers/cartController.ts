@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { cartData } from "../data/data";
 import { v4 as uuidv4 } from "uuid";
 import Cart from "../models/Cart";
 import Product from "../models/Product";
@@ -60,8 +59,6 @@ export const cartUpdateController = async (req: Request, res: Response) => {
 };
 
 export const cartFetchController = async (req: Request, res: Response) => {
-    console.log(cartData);
-
     Cart.find({})
         .then((cartData) => {
             console.log(cartData);
@@ -82,4 +79,34 @@ export const cartFetchController = async (req: Request, res: Response) => {
 
             res.status(500).json(response);
         });
+};
+
+export const cartDeleteController = async (req: Request, res: Response) => {
+    const { cartId } = req.body.data;
+    Cart.deleteOne({ cartId: cartId }).then(() => {
+        const response: IResponse = {
+            status: "success",
+            message: "Removed from cart"
+        };
+        res.status(200).json(response);
+    }).catch(() =>{
+        const response: IResponse = {
+            status: "failed",
+            message: "Internal error"
+        };
+        res.status(500).json(response);
+    })
+
+    
+
+    // })
+    // .catch((error) => {
+    //     // Handle any errors that occur during the authentication process
+    //     const response: IResponse = {
+    //         status: "failed",
+    //         message: "internal error",
+    //     };
+
+    //     res.status(500).json(response);
+    // });
 };

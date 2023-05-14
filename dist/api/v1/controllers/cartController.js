@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cartFetchController = exports.cartUpdateController = void 0;
-const data_1 = require("../data/data");
+exports.cartDeleteController = exports.cartFetchController = exports.cartUpdateController = void 0;
 const uuid_1 = require("uuid");
 const Cart_1 = __importDefault(require("../models/Cart"));
 const Product_1 = __importDefault(require("../models/Product"));
@@ -54,7 +53,6 @@ const cartUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.cartUpdateController = cartUpdateController;
 const cartFetchController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(data_1.cartData);
     Cart_1.default.find({})
         .then((cartData) => {
         console.log(cartData);
@@ -75,3 +73,29 @@ const cartFetchController = (req, res) => __awaiter(void 0, void 0, void 0, func
     });
 });
 exports.cartFetchController = cartFetchController;
+const cartDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { cartId } = req.body.data;
+    Cart_1.default.deleteOne({ cartId: cartId }).then(() => {
+        const response = {
+            status: "success",
+            message: "Removed from cart"
+        };
+        res.status(200).json(response);
+    }).catch(() => {
+        const response = {
+            status: "failed",
+            message: "Internal error"
+        };
+        res.status(500).json(response);
+    });
+    // })
+    // .catch((error) => {
+    //     // Handle any errors that occur during the authentication process
+    //     const response: IResponse = {
+    //         status: "failed",
+    //         message: "internal error",
+    //     };
+    //     res.status(500).json(response);
+    // });
+});
+exports.cartDeleteController = cartDeleteController;

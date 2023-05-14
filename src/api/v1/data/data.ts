@@ -1,1 +1,1 @@
-export const cartData : any = [];
+// export const cartData : any = [];

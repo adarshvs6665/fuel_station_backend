@@ -2,10 +2,10 @@ import express from "express";
 import { defaultController } from "../controllers/defaultController";
 import { orderController } from "../controllers/orderController";
 import {
+    cartDeleteController,
     cartFetchController,
     cartUpdateController,
 } from "../controllers/cartController";
-import { cartData } from "../data/data";
 import {
     userAuthenticateController,
     userCreateController,
@@ -37,6 +37,7 @@ export const deliveryRouter = express.Router();
 userRouter.get("/order", orderController);
 userRouter.get("/cart", cartFetchController);
 userRouter.post("/cart", cartUpdateController);
+userRouter.delete("/cart", cartDeleteController);
 userRouter.post("/create-user", userCreateController);
 userRouter.post("/login", userAuthenticateController);
 
@@ -50,12 +51,12 @@ deliveryRouter.post("/delivery-boy-login", deliveryBoyAuthenticateController);
 
 // development purpose
 commonRouter.post("/default", defaultController);
-commonRouter.delete("/reset-cart", (req, res) => {
-    console.log(cartData);
-    cartData.splice(0, cartData.length);
-    console.log(cartData);
-    res.send("deleted");
-});
+// commonRouter.delete("/reset-cart", (req, res) => {
+//     console.log(cartData);
+//     cartData.splice(0, cartData.length);
+//     console.log(cartData);
+//     res.send("deleted");
+// });
 
 // defaultRouter.get("/cart")
 
