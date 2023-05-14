@@ -88,14 +88,5 @@ const cartDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         };
         res.status(500).json(response);
     });
-    // })
-    // .catch((error) => {
-    //     // Handle any errors that occur during the authentication process
-    //     const response: IResponse = {
-    //         status: "failed",
-    //         message: "internal error",
-    //     };
-    //     res.status(500).json(response);
-    // });
 });
 exports.cartDeleteController = cartDeleteController;

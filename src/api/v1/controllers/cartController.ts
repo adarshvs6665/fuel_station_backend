@@ -96,17 +96,4 @@ export const cartDeleteController = async (req: Request, res: Response) => {
         };
         res.status(500).json(response);
     })
-
-    
-
-    // })
-    // .catch((error) => {
-    //     // Handle any errors that occur during the authentication process
-    //     const response: IResponse = {
-    //         status: "failed",
-    //         message: "internal error",
-    //     };
-
-    //     res.status(500).json(response);
-    // });
 };
