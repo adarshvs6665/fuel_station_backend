@@ -8,74 +8,94 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.orderController = void 0;
-const orderController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.orderGenerateController = exports.orderFetchController = void 0;
+const Cart_1 = __importDefault(require("../models/Cart"));
+const uuid_1 = require("uuid");
+const Order_1 = __importDefault(require("../models/Order"));
+const Product_1 = __importDefault(require("../models/Product"));
+const orderFetchController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const orders = [
     //     {
-    //         name: "Diesel",
-    //         deliveryTime: "Today 7:30 pm",
-    //         price: 12.99,
-    //         image: "assets/images/diesel.jpg",
-    //         completed: false,
-    //         quantity: "1L",
+    //         orderId: "12345",
+    //         item: {
+    //             id: 1,
+    //             imageUrl: "assets/images/petrol.jpg",
+    //             name: "Product Name",
+    //             price: 9.99,
+    //             review: 4.5,
+    //             star: 4.0,
+    //             value: 2,
+    //             quantity: "2",
+    //         },
+    //         status: "PENDING",
+    //         deliveryPartner: {
+    //             deliveryPartnerId: "DP123",
+    //             deliveryTime: "2-3 days",
+    //             deliveryPartnerMobileNumber: "9876543210",
+    //             deliveryPartnerLocation: {
+    //                 latitude: 88.8,
+    //                 longitude: 88.9,
+    //             },
+    //         },
     //     },
     //     {
-    //         name: "Petrol",
-    //         deliveryTime: "Tomorrow 1:00 pm",
-    //         price: 8.99,
-    //         image: "assets/images/petrol.jpg",
-    //         completed: true,
-    //         quantity: "2L",
-    //     },
-    //     {
-    //         name: "Kerosene",
-    //         deliveryTime: "Today 8:00 pm",
-    //         price: 18.99,
-    //         image: "assets/images/kerosene.jpg",
-    //         completed: true,
-    //         quantity: "1L",
-    //     },
-    //     {
-    //         name: "Kerosene",
-    //         deliveryTime: "Today 8:00 pm",
-    //         price: 18.99,
-    //         image: "assets/images/kerosene.jpg",
-    //         completed: true,
-    //         quantity: "1L",
-    //     },
-    //     {
-    //         name: "Kerosene",
-    //         deliveryTime: "Today 8:00 pm",
-    //         price: 18.99,
-    //         image: "assets/images/kerosene.jpg",
-    //         completed: true,
-    //         quantity: "1L",
+    //         orderId: "98753",
+    //         item: {
+    //             id: 1,
+    //             imageUrl: "assets/images/petrol.jpg",
+    //             name: "Product Name",
+    //             price: 9.99,
+    //             review: 4.5,
+    //             star: 4.0,
+    //             value: 2,
+    //             quantity: "2",
+    //         },
+    //         status: "PENDING",
+    //         deliveryPartner: {
+    //             deliveryPartnerId: "DP123",
+    //             deliveryTime: "2-3 days",
+    //             deliveryPartnerMobileNumber: "9876543210",
+    //             deliveryPartnerLocation: {
+    //                 latitude: 88.8,
+    //                 longitude: 88.9,
+    //             },
+    //         },
     //     },
     // ];
-    const orders = [
-        {
-            orderId: "12345",
-            item: {
-                id: 1,
-                imageUrl: "assets/images/petrol.jpg",
-                name: "Product Name",
-                price: 9.99,
-                review: 4.5,
-                star: 4.0,
-                value: 2,
-                quantity: "2",
-            },
-            status: "Pending",
-            deliveryPartner: {
-                deliveryPartnerId: "DP123",
-                deliveryTime: "2-3 days",
-                deliveryPartnerMobileNumber: "9876543210",
-                deliveryPartnerLocation: "City, Country",
-            },
-        },
-    ];
     console.log("hit order");
+    const orders = yield Order_1.default.find();
     res.status(200).json(orders);
 });
-exports.orderController = orderController;
+exports.orderFetchController = orderFetchController;
+const orderGenerateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { cartData, position } = req.body;
+    console.log("hit");
+    try {
+        cartData.map((data) => {
+            console.log(data.cartId);
+            const orderItem = new Order_1.default({
+                orderId: (0, uuid_1.v4)(),
+                item: new Product_1.default(Object.assign({}, data.item)),
+                status: "PENDING",
+                deliveryLocation: position,
+            });
+            orderItem.save();
+        });
+        yield Cart_1.default.deleteMany();
+        res.status(200).json({
+            status: "success",
+            message: "Order placed successfully.",
+        });
+    }
+    catch (error) {
+        res.status(500).send({
+            status: "failed",
+            message: "Internal error.",
+        });
+    }
+});
+exports.orderGenerateController = orderGenerateController;

@@ -18,23 +18,6 @@ type cartDataItem = {
 export const cartUpdateController = async (req: Request, res: Response) => {
     const { data } = req.body;
 
-    // const itemExistsAlready = cartData.some((item: cartDataItem) => {
-    //     return (
-    //         item.imageUrl === data.imageUrl &&
-    //         item.name === data.name &&
-    //         item.price === data.price &&
-    //         item.review === data.review &&
-    //         item.star === data.star &&
-    //         item.id === data.id &&
-    //         item.value === data.value &&
-    //         item.quantity === data.quantity
-    //     );
-    // });
-
-    // cartData.push(data);
-
-    // console.log(cartData);
-
     const cartDataExists = await Cart.findOne({ "item.name": data!.name });
     if (!cartDataExists) {
         const cartItem = new Cart({
@@ -61,7 +44,7 @@ export const cartUpdateController = async (req: Request, res: Response) => {
 export const cartFetchController = async (req: Request, res: Response) => {
     Cart.find({})
         .then((cartData) => {
-            console.log(cartData);
+            // console.log(cartData);
             const response: IResponse = {
                 status: "success",
                 message: "Fetched successfully",

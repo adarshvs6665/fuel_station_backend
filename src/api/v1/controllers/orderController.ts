@@ -1,70 +1,93 @@
 import { Request, Response } from "express";
+import Cart from "../models/Cart";
+import { v4 as uuidv4 } from "uuid";
+import Order from "../models/Order";
+import Product from "../models/Product";
 
-export const orderController = async (req: Request, res: Response) => {
+export const orderFetchController = async (req: Request, res: Response) => {
     // const orders = [
     //     {
-    //         name: "Diesel",
-    //         deliveryTime: "Today 7:30 pm",
-    //         price: 12.99,
-    //         image: "assets/images/diesel.jpg",
-    //         completed: false,
-    //         quantity: "1L",
+    //         orderId: "12345",
+    //         item: {
+    //             id: 1,
+    //             imageUrl: "assets/images/petrol.jpg",
+    //             name: "Product Name",
+    //             price: 9.99,
+    //             review: 4.5,
+    //             star: 4.0,
+    //             value: 2,
+    //             quantity: "2",
+    //         },
+    //         status: "PENDING",
+    //         deliveryPartner: {
+    //             deliveryPartnerId: "DP123",
+    //             deliveryTime: "2-3 days",
+    //             deliveryPartnerMobileNumber: "9876543210",
+    //             deliveryPartnerLocation: {
+    //                 latitude: 88.8,
+    //                 longitude: 88.9,
+    //             },
+    //         },
     //     },
     //     {
-    //         name: "Petrol",
-    //         deliveryTime: "Tomorrow 1:00 pm",
-    //         price: 8.99,
-    //         image: "assets/images/petrol.jpg",
-    //         completed: true,
-    //         quantity: "2L",
-    //     },
-    //     {
-    //         name: "Kerosene",
-    //         deliveryTime: "Today 8:00 pm",
-    //         price: 18.99,
-    //         image: "assets/images/kerosene.jpg",
-    //         completed: true,
-    //         quantity: "1L",
-    //     },
-    //     {
-    //         name: "Kerosene",
-    //         deliveryTime: "Today 8:00 pm",
-    //         price: 18.99,
-    //         image: "assets/images/kerosene.jpg",
-    //         completed: true,
-    //         quantity: "1L",
-    //     },
-    //     {
-    //         name: "Kerosene",
-    //         deliveryTime: "Today 8:00 pm",
-    //         price: 18.99,
-    //         image: "assets/images/kerosene.jpg",
-    //         completed: true,
-    //         quantity: "1L",
+    //         orderId: "98753",
+    //         item: {
+    //             id: 1,
+    //             imageUrl: "assets/images/petrol.jpg",
+    //             name: "Product Name",
+    //             price: 9.99,
+    //             review: 4.5,
+    //             star: 4.0,
+    //             value: 2,
+    //             quantity: "2",
+    //         },
+    //         status: "PENDING",
+    //         deliveryPartner: {
+    //             deliveryPartnerId: "DP123",
+    //             deliveryTime: "2-3 days",
+    //             deliveryPartnerMobileNumber: "9876543210",
+    //             deliveryPartnerLocation: {
+    //                 latitude: 88.8,
+    //                 longitude: 88.9,
+    //             },
+    //         },
     //     },
     // ];
-    const orders = [
-        {
-            orderId: "12345",
-            item: {
-                id: 1,
-                imageUrl: "assets/images/petrol.jpg",
-                name: "Product Name",
-                price: 9.99,
-                review: 4.5,
-                star: 4.0,
-                value: 2,
-                quantity: "2",
-            },
-            status: "Pending",
-            deliveryPartner: {
-                deliveryPartnerId: "DP123",
-                deliveryTime: "2-3 days",
-                deliveryPartnerMobileNumber: "9876543210",
-                deliveryPartnerLocation: "City, Country",
-            },
-        },
-    ];
+
     console.log("hit order");
+    const orders = await Order.find();
     res.status(200).json(orders);
+};
+
+export const orderGenerateController = async (req: Request, res: Response) => {
+    const { cartData, position } = req.body;
+
+    console.log("hit");
+
+    try {
+        cartData.map((data: any) => {
+            console.log(data.cartId);
+
+            const orderItem = new Order({
+                orderId: uuidv4(),
+                item: new Product({
+                    ...data.item,
+                }),
+                status: "PENDING",
+                deliveryLocation: position,
+            });
+            orderItem.save();
+        });
+
+        await Cart.deleteMany();
+        res.status(200).json({
+            status: "success",
+            message: "Order placed successfully.",
+        });
+    } catch (error) {
+        res.status(500).send({
+            status: "failed",
+            message: "Internal error.",
+        });
+    }
 };

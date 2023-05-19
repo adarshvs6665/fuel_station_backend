@@ -18,20 +18,6 @@ const Cart_1 = __importDefault(require("../models/Cart"));
 const Product_1 = __importDefault(require("../models/Product"));
 const cartUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { data } = req.body;
-    // const itemExistsAlready = cartData.some((item: cartDataItem) => {
-    //     return (
-    //         item.imageUrl === data.imageUrl &&
-    //         item.name === data.name &&
-    //         item.price === data.price &&
-    //         item.review === data.review &&
-    //         item.star === data.star &&
-    //         item.id === data.id &&
-    //         item.value === data.value &&
-    //         item.quantity === data.quantity
-    //     );
-    // });
-    // cartData.push(data);
-    // console.log(cartData);
     const cartDataExists = yield Cart_1.default.findOne({ "item.name": data.name });
     if (!cartDataExists) {
         const cartItem = new Cart_1.default({
@@ -55,7 +41,7 @@ exports.cartUpdateController = cartUpdateController;
 const cartFetchController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     Cart_1.default.find({})
         .then((cartData) => {
-        console.log(cartData);
+        // console.log(cartData);
         const response = {
             status: "success",
             message: "Fetched successfully",

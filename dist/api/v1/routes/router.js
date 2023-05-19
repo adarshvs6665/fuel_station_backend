@@ -20,7 +20,8 @@ exports.pumpRouter = express_1.default.Router();
 // for routing deliveryBoy APIs
 exports.deliveryRouter = express_1.default.Router();
 // user routes
-exports.userRouter.get("/order", orderController_1.orderController);
+exports.userRouter.get("/order", orderController_1.orderFetchController);
+exports.userRouter.post("/order", orderController_1.orderGenerateController);
 exports.userRouter.get("/cart", cartController_1.cartFetchController);
 exports.userRouter.post("/cart", cartController_1.cartUpdateController);
 exports.userRouter.delete("/cart", cartController_1.cartDeleteController);

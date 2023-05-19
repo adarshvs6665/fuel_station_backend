@@ -1,6 +1,6 @@
 import express from "express";
 import { defaultController } from "../controllers/defaultController";
-import { orderController } from "../controllers/orderController";
+import { orderFetchController, orderGenerateController } from "../controllers/orderController";
 import {
     cartDeleteController,
     cartFetchController,
@@ -34,7 +34,8 @@ export const deliveryRouter = express.Router();
 
 
 // user routes
-userRouter.get("/order", orderController);
+userRouter.get("/order", orderFetchController);
+userRouter.post("/order", orderGenerateController);
 userRouter.get("/cart", cartFetchController);
 userRouter.post("/cart", cartUpdateController);
 userRouter.delete("/cart", cartDeleteController);
