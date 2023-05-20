@@ -80,7 +80,7 @@ export const orderFetchController = async (req: Request, res: Response) => {
     //     },
     // ];
     const { userId } = req.query;
-console.log(userId);
+    console.log(userId);
 
     console.log("hit order");
     const orders = await Order.find({ userId: userId });
@@ -102,6 +102,8 @@ export const orderGenerateController = async (req: Request, res: Response) => {
                 }),
                 status: "PENDING",
                 deliveryLocation: position,
+                accepted: false,
+                accetedPumpId: "",
             });
             orderItem.save();
         });

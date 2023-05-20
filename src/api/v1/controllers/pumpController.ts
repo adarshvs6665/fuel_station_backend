@@ -2,8 +2,13 @@ import { Request, Response } from "express";
 import PumpOwner from "../models/PumpOwner";
 import { IResponse } from "../Interfaces/IResponse";
 import { v4 as uuidv4 } from "uuid";
+import Order from "../models/Order";
+import RejectedOrder from "../models/RejectedOrder";
 
-export const pumpOwnerCreateController = async (req: Request, res: Response) => {
+export const pumpOwnerCreateController = async (
+    req: Request,
+    res: Response
+) => {
     const { email } = req.body;
 
     // checks if user exists
@@ -16,13 +21,13 @@ export const pumpOwnerCreateController = async (req: Request, res: Response) => 
                 };
                 res.status(400).json(response);
             } else {
-                req.body.userId = uuidv4();
+                req.body.pumpOwnerId = uuidv4();
                 const pumpOwner = new PumpOwner(req.body);
-
                 pumpOwner.save();
+
                 const response: IResponse = {
                     status: "success",
-                    message: "Registration successful",
+                    message: "Registered Successfully. Login to continue",
                 };
                 res.status(200).json(response);
             }
@@ -47,7 +52,13 @@ export const pumpOwnerAuthenticateController = async (
         const pumpOwner = await PumpOwner.findOne({ email });
 
         // handling invalid credentials
-        if (!pumpOwner || !pumpOwner!.verifyPassword(password)) {
+        if (!pumpOwner) {
+            const response: IResponse = {
+                status: "failed",
+                message: "Invalid email or password",
+            };
+            res.status(401).json(response);
+        } else if (!pumpOwner!.verifyPassword(password)) {
             const response: IResponse = {
                 status: "failed",
                 message: "Invalid email or password",
@@ -74,3 +85,177 @@ export const pumpOwnerAuthenticateController = async (
     }
 };
 
+export const pumpOwnerOrderFetchController = async (
+    req: Request,
+    res: Response
+) => {
+    const { pumpOwnerId } = req.query;
+
+    try {
+        const orders = await Order.find().lean();
+
+        const updatedOrders: any = await Promise.all(
+            orders.map(async (order) => {
+                if (!order.accepted) {
+                    const rejectedOrder = await RejectedOrder.findOne({
+                        orderId: order.orderId,
+                        pumpOwnerId: pumpOwnerId,
+                    });
+console.log(rejectedOrder);
+
+                    if (rejectedOrder) {
+                        return {
+                            ...order,
+                            rejected: true,
+                        };
+                    } else {
+                        return {
+                            ...order,
+                            rejected: false,
+                        };
+                    }
+                } else if (order.acceptedPumpId == pumpOwnerId) {
+                    console.log("accepted");
+                    
+                    return {
+                        ...order,
+                        rejected: false,
+                    };
+                }
+            })
+        );
+        const filteredArray = updatedOrders.filter((item : any) => item !== null && item !== undefined);
+
+        const response: IResponse = {
+            status: "success",
+            message: "Fetched order successfully",
+            data: filteredArray,
+        };
+
+        res.status(200).json(response);
+    } catch (error) {
+        // Handle any errors that occur during the authentication process
+        const response: IResponse = {
+            status: "failed",
+            message: "internal error",
+        };
+
+        res.status(500).json(response);
+    }
+};
+
+export const pumpOwnerRejectOrderController = async (
+    req: Request,
+    res: Response
+) => {
+    const { pumpOwnerId, orderId } = req.body;
+
+    try {
+        const existingOrder = await RejectedOrder.findOne({
+            orderId,
+            pumpOwnerId,
+        });
+
+        if (existingOrder) {
+            const response: IResponse = {
+                status: "failed",
+                message: "Order already rejected",
+            };
+            res.status(409).json(response);
+        } else {
+            const rejectedOrder = new RejectedOrder({
+                orderId,
+                pumpOwnerId,
+            });
+            await rejectedOrder.save();
+            const response: IResponse = {
+                status: "failed",
+                message: "Order rejected successfully",
+            };
+            res.status(200).json(response);
+        }
+    } catch (error) {
+        // Handle any errors that occur during the authentication process
+        const response: IResponse = {
+            status: "failed",
+            message: "internal error",
+        };
+
+        res.status(500).json(response);
+    }
+};
+
+export const pumpOwnerAcceptOrderController = async (
+    req: Request,
+    res: Response
+) => {
+    const { pumpOwnerId, orderId } = req.body;
+
+    try {
+        const updatedOrder = await Order.findOneAndUpdate(
+            {
+                orderId: orderId,
+            },
+            {
+                accepted: true,
+                acceptedPumpId: pumpOwnerId,
+                status: "DELIVERY",
+            },
+            { new: true }
+        ).lean();
+
+        if (!updatedOrder) {
+            // Handle case when order is not found
+            const response: IResponse = {
+                status: "failed",
+                message: "Order not found",
+            };
+
+            res.status(404).json(response);
+            return;
+        }
+
+        const response: IResponse = {
+            status: "success",
+            message: "Order updated successfully",
+            data: updatedOrder,
+        };
+
+        res.status(200).json(response);
+    } catch (error) {
+        // Handle any errors that occur during the update process
+        const response: IResponse = {
+            status: "failed",
+            message: "Internal error",
+        };
+
+        res.status(500).json(response);
+    }
+};
+
+export const pumpOwnerDetailsFetchController = async (
+    req: Request,
+    res: Response
+) => {
+    const { pumpOwnerId } = req.query;
+
+    try {
+        PumpOwner.findOne({ pumpOwnerId: pumpOwnerId }).then((owner) => {
+            const { password, ...ownerWithoutPassword } = owner!.toObject();
+            const response: IResponse = {
+                status: "success",
+                message: "Details fetched successfully",
+                data: ownerWithoutPassword,
+            };
+            res.status(200).json(response);
+        });
+    } catch (error) {
+        // Handle any errors that occur during the authentication process
+        const response: IResponse = {
+            status: "failed",
+            message: "internal error",
+        };
+
+        res.status(500).json(response);
+    }
+};

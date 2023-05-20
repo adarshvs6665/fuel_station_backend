@@ -110,6 +110,8 @@ const orderGenerateController = (req, res) => __awaiter(void 0, void 0, void 0, 
                 item: new Product_1.default(Object.assign({}, data.item)),
                 status: "PENDING",
                 deliveryLocation: position,
+                accepted: false,
+                accetedPumpId: "",
             });
             orderItem.save();
         });

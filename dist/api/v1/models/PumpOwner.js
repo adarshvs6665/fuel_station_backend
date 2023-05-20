@@ -7,10 +7,11 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const PumpOwnerSchema = new mongoose_1.default.Schema({
     pumpOwnerId: String,
     name: String,
-    password: String,
-    location: String,
-    mobile: String,
     email: String,
+    password: String,
+    location: {},
+    mobile: String,
+    locationName: String,
 });
 // Add a method to compare passwords
 PumpOwnerSchema.methods.verifyPassword = function (candidatePassword) {

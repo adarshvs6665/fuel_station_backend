@@ -20,6 +20,8 @@ const OrderSchema = new mongoose.Schema({
     status: String,
     deliveryPartner: DeliveryPartnerSchema,
     deliveryLocation: LocationSchema,
+    accepted: Boolean,
+    acceptedPumpId: String,
 });
 
 const Order = mongoose.model("Order", OrderSchema);

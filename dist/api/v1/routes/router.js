@@ -30,6 +30,10 @@ exports.userRouter.post("/login", userController_1.userAuthenticateController);
 // pump routes
 exports.pumpRouter.post("/create-pump-owner", pumpController_1.pumpOwnerCreateController);
 exports.pumpRouter.post("/pump-owner-login", pumpController_1.pumpOwnerAuthenticateController);
+exports.pumpRouter.get("/order", pumpController_1.pumpOwnerOrderFetchController);
+exports.pumpRouter.post("/reject-order", pumpController_1.pumpOwnerRejectOrderController);
+exports.pumpRouter.post("/accept-order", pumpController_1.pumpOwnerAcceptOrderController);
+exports.pumpRouter.get("/pump-details", pumpController_1.pumpOwnerDetailsFetchController); // 917fbe77-2240-4318-ac02-4cf8c4d47e77
 // delivery routes
 exports.deliveryRouter.post("/create-delivery-boy", deliveryController_1.deliveryBoyCreateController);
 exports.deliveryRouter.post("/delivery-boy-login", deliveryController_1.deliveryBoyAuthenticateController);

@@ -11,8 +11,12 @@ import {
     userCreateController,
 } from "../controllers/userController";
 import {
+    pumpOwnerAcceptOrderController,
     pumpOwnerAuthenticateController,
     pumpOwnerCreateController,
+    pumpOwnerDetailsFetchController,
+    pumpOwnerOrderFetchController,
+    pumpOwnerRejectOrderController,
 } from "../controllers/pumpController";
 import {
     deliveryBoyAuthenticateController,
@@ -45,6 +49,10 @@ userRouter.post("/login", userAuthenticateController);
 // pump routes
 pumpRouter.post("/create-pump-owner", pumpOwnerCreateController);
 pumpRouter.post("/pump-owner-login", pumpOwnerAuthenticateController);
+pumpRouter.get("/order", pumpOwnerOrderFetchController);
+pumpRouter.post("/reject-order", pumpOwnerRejectOrderController);
+pumpRouter.post("/accept-order", pumpOwnerAcceptOrderController);
+pumpRouter.get("/pump-details", pumpOwnerDetailsFetchController); // 917fbe77-2240-4318-ac02-4cf8c4d47e77
 
 // delivery routes
 deliveryRouter.post("/create-delivery-boy", deliveryBoyCreateController);

@@ -13,6 +13,7 @@ exports.defaultController = void 0;
 const defaultController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const user = new User({name: "Adarsh", salary: 100});
     // user.save();
+    console.log(req.body);
     res.status(200).json({ data: "hii" });
 });
 exports.defaultController = defaultController;
