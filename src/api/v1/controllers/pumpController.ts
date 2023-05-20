@@ -101,7 +101,6 @@ export const pumpOwnerOrderFetchController = async (
                         orderId: order.orderId,
                         pumpOwnerId: pumpOwnerId,
                     });
-console.log(rejectedOrder);
 
                     if (rejectedOrder) {
                         return {
@@ -115,8 +114,6 @@ console.log(rejectedOrder);
                         };
                     }
                 } else if (order.acceptedPumpId == pumpOwnerId) {
-                    console.log("accepted");
-                    
                     return {
                         ...order,
                         rejected: false,
@@ -124,7 +121,9 @@ console.log(rejectedOrder);
                 }
             })
         );
-        const filteredArray = updatedOrders.filter((item : any) => item !== null && item !== undefined);
+        const filteredArray = updatedOrders.filter(
+            (item: any) => item !== null && item !== undefined
+        );
 
         const response: IResponse = {
             status: "success",

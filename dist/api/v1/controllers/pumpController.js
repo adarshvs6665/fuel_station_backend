@@ -110,7 +110,6 @@ const pumpOwnerOrderFetchController = (req, res) => __awaiter(void 0, void 0, vo
                     orderId: order.orderId,
                     pumpOwnerId: pumpOwnerId,
                 });
-                console.log(rejectedOrder);
                 if (rejectedOrder) {
                     return Object.assign(Object.assign({}, order), { rejected: true });
                 }
@@ -119,7 +118,6 @@ const pumpOwnerOrderFetchController = (req, res) => __awaiter(void 0, void 0, vo
                 }
             }
             else if (order.acceptedPumpId == pumpOwnerId) {
-                console.log("accepted");
                 return Object.assign(Object.assign({}, order), { rejected: false });
             }
         })));
