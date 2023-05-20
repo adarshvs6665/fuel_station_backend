@@ -20,7 +20,7 @@ const Product_1 = __importDefault(require("../models/Product"));
 const orderFetchController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const orders = [
     //     {
-    //         orderId: "12345",
+    //         orderId: "83a4d796-7ae2-4469-9bc6-595ed7937349",
     //         item: {
     //             id: 1,
     //             imageUrl: "assets/images/petrol.jpg",
@@ -32,18 +32,13 @@ const orderFetchController = (req, res) => __awaiter(void 0, void 0, void 0, fun
     //             quantity: "2",
     //         },
     //         status: "PENDING",
-    //         deliveryPartner: {
-    //             deliveryPartnerId: "DP123",
-    //             deliveryTime: "2-3 days",
-    //             deliveryPartnerMobileNumber: "9876543210",
-    //             deliveryPartnerLocation: {
-    //                 latitude: 88.8,
-    //                 longitude: 88.9,
-    //             },
+    //         deliveryLocation: {
+    //             latitude: 8.568625,
+    //             longitude: 76.9619567,
     //         },
     //     },
     //     {
-    //         orderId: "98753",
+    //         orderId: "83a4d796-9bc6-595ed7937349-7ae2-4469",
     //         item: {
     //             id: 1,
     //             imageUrl: "assets/images/petrol.jpg",
@@ -54,7 +49,7 @@ const orderFetchController = (req, res) => __awaiter(void 0, void 0, void 0, fun
     //             value: 2,
     //             quantity: "2",
     //         },
-    //         status: "PENDING",
+    //         status: "COMPLETED",
     //         deliveryPartner: {
     //             deliveryPartnerId: "DP123",
     //             deliveryTime: "2-3 days",
@@ -64,20 +59,53 @@ const orderFetchController = (req, res) => __awaiter(void 0, void 0, void 0, fun
     //                 longitude: 88.9,
     //             },
     //         },
+    //         deliveryLocation: {
+    //             latitude: 8.568625,
+    //             longitude: 76.9619567,
+    //         },
+    //     },
+    //     {
+    //         orderId: "83a4d796-9bc6-595ed7937349-7ae2-4469",
+    //         item: {
+    //             id: 1,
+    //             imageUrl: "assets/images/petrol.jpg",
+    //             name: "Product Name",
+    //             price: 9.99,
+    //             review: 4.5,
+    //             star: 4.0,
+    //             value: 2,
+    //             quantity: "2",
+    //         },
+    //         status: "DELIVERY",
+    //         deliveryPartner: {
+    //             deliveryPartnerId: "DP123",
+    //             deliveryTime: "2-3 days",
+    //             deliveryPartnerMobileNumber: "9876543210",
+    //             deliveryPartnerLocation: {
+    //                 latitude: 88.8,
+    //                 longitude: 88.9,
+    //             },
+    //         },
+    //         deliveryLocation: {
+    //             latitude: 8.568625,
+    //             longitude: 76.9619567,
+    //         },
     //     },
     // ];
+    const { userId } = req.query;
+    console.log(userId);
     console.log("hit order");
-    const orders = yield Order_1.default.find();
+    const orders = yield Order_1.default.find({ userId: userId });
     res.status(200).json(orders);
 });
 exports.orderFetchController = orderFetchController;
 const orderGenerateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { cartData, position } = req.body;
+    const { cartData, position, userId } = req.body;
     console.log("hit");
     try {
         cartData.map((data) => {
-            console.log(data.cartId);
             const orderItem = new Order_1.default({
+                userId: userId,
                 orderId: (0, uuid_1.v4)(),
                 item: new Product_1.default(Object.assign({}, data.item)),
                 status: "PENDING",
@@ -85,7 +113,7 @@ const orderGenerateController = (req, res) => __awaiter(void 0, void 0, void 0, 
             });
             orderItem.save();
         });
-        yield Cart_1.default.deleteMany();
+        yield Cart_1.default.deleteMany({ userId: userId });
         res.status(200).json({
             status: "success",
             message: "Order placed successfully.",

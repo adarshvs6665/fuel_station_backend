@@ -41,6 +41,9 @@ export const userAuthenticateController = async (
     res: Response
 ): Promise<void> => {
     const { email, password } = req.body;
+    console.log(email);
+    console.log(password);
+    console.log(req.body);
 
     try {
         // Find the user by email
@@ -48,17 +51,23 @@ export const userAuthenticateController = async (
 
         // handling invalid credentials
         if (!user || !user!.verifyPassword(password)) {
+            console.log(!user);
+            console.log(!user!.verifyPassword(password));
+
             const response: IResponse = {
                 status: "failed",
                 message: "Invalid email or password",
             };
             res.status(401).json(response);
         } else {
+            const { password, ...userWithoutPassword } = user.toObject();
+
             const response: IResponse = {
                 status: "success",
                 message: "Login successful",
-                data: user,
+                data: userWithoutPassword,
             };
+
 
             // User is authenticated
             res.status(200).json(response);
@@ -73,4 +82,3 @@ export const userAuthenticateController = async (
         res.status(500).json(response);
     }
 };
-

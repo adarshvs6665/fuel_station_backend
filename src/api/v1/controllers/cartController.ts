@@ -16,12 +16,13 @@ type cartDataItem = {
 };
 
 export const cartUpdateController = async (req: Request, res: Response) => {
-    const { data } = req.body;
+    const { data, userId } = req.body;
 
     const cartDataExists = await Cart.findOne({ "item.name": data!.name });
     if (!cartDataExists) {
         const cartItem = new Cart({
             cartId: uuidv4(),
+            userId: userId,
             item: new Product({
                 ...data,
             }),
@@ -42,9 +43,10 @@ export const cartUpdateController = async (req: Request, res: Response) => {
 };
 
 export const cartFetchController = async (req: Request, res: Response) => {
-    Cart.find({})
+    const { userId } = req.query;
+
+    Cart.find({ userId: userId })
         .then((cartData) => {
-            // console.log(cartData);
             const response: IResponse = {
                 status: "success",
                 message: "Fetched successfully",
@@ -66,17 +68,19 @@ export const cartFetchController = async (req: Request, res: Response) => {
 
 export const cartDeleteController = async (req: Request, res: Response) => {
     const { cartId } = req.body.data;
-    Cart.deleteOne({ cartId: cartId }).then(() => {
-        const response: IResponse = {
-            status: "success",
-            message: "Removed from cart"
-        };
-        res.status(200).json(response);
-    }).catch(() =>{
-        const response: IResponse = {
-            status: "failed",
-            message: "Internal error"
-        };
-        res.status(500).json(response);
-    })
+    Cart.deleteOne({ cartId: cartId })
+        .then(() => {
+            const response: IResponse = {
+                status: "success",
+                message: "Removed from cart",
+            };
+            res.status(200).json(response);
+        })
+        .catch(() => {
+            const response: IResponse = {
+                status: "failed",
+                message: "Internal error",
+            };
+            res.status(500).json(response);
+        });
 };

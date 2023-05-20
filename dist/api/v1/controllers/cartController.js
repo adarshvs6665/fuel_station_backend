@@ -17,11 +17,12 @@ const uuid_1 = require("uuid");
 const Cart_1 = __importDefault(require("../models/Cart"));
 const Product_1 = __importDefault(require("../models/Product"));
 const cartUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { data } = req.body;
+    const { data, userId } = req.body;
     const cartDataExists = yield Cart_1.default.findOne({ "item.name": data.name });
     if (!cartDataExists) {
         const cartItem = new Cart_1.default({
             cartId: (0, uuid_1.v4)(),
+            userId: userId,
             item: new Product_1.default(Object.assign({}, data)),
         });
         cartItem.save();
@@ -39,9 +40,9 @@ const cartUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.cartUpdateController = cartUpdateController;
 const cartFetchController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    Cart_1.default.find({})
+    const { userId } = req.query;
+    Cart_1.default.find({ userId: userId })
         .then((cartData) => {
-        // console.log(cartData);
         const response = {
             status: "success",
             message: "Fetched successfully",
@@ -61,16 +62,18 @@ const cartFetchController = (req, res) => __awaiter(void 0, void 0, void 0, func
 exports.cartFetchController = cartFetchController;
 const cartDeleteController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { cartId } = req.body.data;
-    Cart_1.default.deleteOne({ cartId: cartId }).then(() => {
+    Cart_1.default.deleteOne({ cartId: cartId })
+        .then(() => {
         const response = {
             status: "success",
-            message: "Removed from cart"
+            message: "Removed from cart",
         };
         res.status(200).json(response);
-    }).catch(() => {
+    })
+        .catch(() => {
         const response = {
             status: "failed",
-            message: "Internal error"
+            message: "Internal error",
         };
         res.status(500).json(response);
     });

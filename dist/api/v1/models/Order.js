@@ -17,6 +17,7 @@ const DeliveryPartnerSchema = new mongoose_1.default.Schema({
 });
 const OrderSchema = new mongoose_1.default.Schema({
     orderId: String,
+    userId: String,
     item: Product_1.default.schema,
     status: String,
     deliveryPartner: DeliveryPartnerSchema,

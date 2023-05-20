@@ -15,6 +15,7 @@ const DeliveryPartnerSchema = new mongoose.Schema({
 
 const OrderSchema = new mongoose.Schema({
     orderId: String,
+    userId: String,
     item: Product.schema,
     status: String,
     deliveryPartner: DeliveryPartnerSchema,
