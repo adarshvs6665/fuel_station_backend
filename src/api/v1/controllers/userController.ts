@@ -50,10 +50,13 @@ export const userAuthenticateController = async (
         const user = await User.findOne({ email });
 
         // handling invalid credentials
-        if (!user || !user!.verifyPassword(password)) {
-            console.log(!user);
-            console.log(!user!.verifyPassword(password));
-
+        if (!user) {
+            const response: IResponse = {
+                status: "failed",
+                message: "Invalid email or password",
+            };
+            res.status(401).json(response);
+        } else if (!user!.verifyPassword(password)) {
             const response: IResponse = {
                 status: "failed",
                 message: "Invalid email or password",
@@ -68,11 +71,12 @@ export const userAuthenticateController = async (
                 data: userWithoutPassword,
             };
 
-
             // User is authenticated
             res.status(200).json(response);
         }
     } catch (err) {
+        console.log(err);
+
         // Handle any errors that occur during the authentication process
         const response: IResponse = {
             status: "failed",

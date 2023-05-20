@@ -67,9 +67,14 @@ const userAuthenticateController = (req, res) => __awaiter(void 0, void 0, void 
         // Find the user by email
         const user = yield User_1.default.findOne({ email });
         // handling invalid credentials
-        if (!user || !user.verifyPassword(password)) {
-            console.log(!user);
-            console.log(!user.verifyPassword(password));
+        if (!user) {
+            const response = {
+                status: "failed",
+                message: "Invalid email or password",
+            };
+            res.status(401).json(response);
+        }
+        else if (!user.verifyPassword(password)) {
             const response = {
                 status: "failed",
                 message: "Invalid email or password",
@@ -88,6 +93,7 @@ const userAuthenticateController = (req, res) => __awaiter(void 0, void 0, void 
         }
     }
     catch (err) {
+        console.log(err);
         // Handle any errors that occur during the authentication process
         const response = {
             status: "failed",
