@@ -184,6 +184,7 @@ const pumpOwnerAcceptOrderController = (req, res) => __awaiter(void 0, void 0, v
         }, {
             accepted: true,
             acceptedPumpId: pumpOwnerId,
+            deliveryAccepted: false,
             status: "DELIVERY",
         }, { new: true }).lean();
         if (!updatedOrder) {

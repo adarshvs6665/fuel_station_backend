@@ -37,6 +37,9 @@ exports.pumpRouter.get("/pump-details", pumpController_1.pumpOwnerDetailsFetchCo
 // delivery routes
 exports.deliveryRouter.post("/create-delivery-boy", deliveryController_1.deliveryBoyCreateController);
 exports.deliveryRouter.post("/delivery-boy-login", deliveryController_1.deliveryBoyAuthenticateController);
+exports.deliveryRouter.post("/delivery-boy-accept-order", deliveryController_1.deliveryBoyOrderAcceptController);
+exports.deliveryRouter.post("/delivery-boy-complete-order", deliveryController_1.deliveryBoyOrderCompleteController);
+exports.deliveryRouter.get("/fetch-delivery-orders", deliveryController_1.deliveryBoyOrdersFetchController);
 // development purpose
 exports.commonRouter.post("/default", defaultController_1.defaultController);
 // commonRouter.delete("/reset-cart", (req, res) => {

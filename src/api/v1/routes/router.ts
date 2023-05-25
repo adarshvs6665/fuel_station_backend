@@ -21,6 +21,9 @@ import {
 import {
     deliveryBoyAuthenticateController,
     deliveryBoyCreateController,
+    deliveryBoyOrderAcceptController,
+    deliveryBoyOrderCompleteController,
+    deliveryBoyOrdersFetchController,
 } from "../controllers/deliveryController";
 
 // for routing user APIs
@@ -57,6 +60,9 @@ pumpRouter.get("/pump-details", pumpOwnerDetailsFetchController); // 917fbe77-22
 // delivery routes
 deliveryRouter.post("/create-delivery-boy", deliveryBoyCreateController);
 deliveryRouter.post("/delivery-boy-login", deliveryBoyAuthenticateController);
+deliveryRouter.post("/delivery-boy-accept-order", deliveryBoyOrderAcceptController);
+deliveryRouter.post("/delivery-boy-complete-order", deliveryBoyOrderCompleteController);
+deliveryRouter.get("/fetch-delivery-orders", deliveryBoyOrdersFetchController);
 
 // development purpose
 commonRouter.post("/default", defaultController);

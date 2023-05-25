@@ -24,6 +24,8 @@ const OrderSchema = new mongoose_1.default.Schema({
     deliveryLocation: LocationSchema,
     accepted: Boolean,
     acceptedPumpId: String,
+    deliveryAccepted: Boolean,
+    acceptedDeliveryBoyId: String,
 });
 const Order = mongoose_1.default.model("Order", OrderSchema);
 exports.default = Order;

@@ -17,6 +17,7 @@ type cartDataItem = {
 
 export const cartUpdateController = async (req: Request, res: Response) => {
     const { data, userId } = req.body;
+console.log("hit");
 
     const cartDataExists = await Cart.findOne({ "item.name": data!.name });
     if (!cartDataExists) {

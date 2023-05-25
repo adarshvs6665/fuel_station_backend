@@ -198,6 +198,7 @@ export const pumpOwnerAcceptOrderController = async (
             {
                 accepted: true,
                 acceptedPumpId: pumpOwnerId,
+                deliveryAccepted: false,
                 status: "DELIVERY",
             },
             { new: true }

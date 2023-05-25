@@ -18,6 +18,7 @@ const Cart_1 = __importDefault(require("../models/Cart"));
 const Product_1 = __importDefault(require("../models/Product"));
 const cartUpdateController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { data, userId } = req.body;
+    console.log("hit");
     const cartDataExists = yield Cart_1.default.findOne({ "item.name": data.name });
     if (!cartDataExists) {
         const cartItem = new Cart_1.default({

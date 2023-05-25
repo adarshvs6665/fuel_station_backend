@@ -4,7 +4,6 @@ interface IUser extends Document {
     userId: string;
     name: string;
     password: string;
-    address: string;
     mobile: string;
     email: string;
     verifyPassword(candidatePassword: string): boolean;
@@ -14,7 +13,6 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
     userId: String,
     name: String,
     password: String,
-    address: String,
     mobile: String,
     email: String,
 });

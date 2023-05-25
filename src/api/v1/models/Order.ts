@@ -22,8 +22,12 @@ const OrderSchema = new mongoose.Schema({
     deliveryLocation: LocationSchema,
     accepted: Boolean,
     acceptedPumpId: String,
+    deliveryAccepted: Boolean,
+    acceptedDeliveryBoyId: String,
 });
 
 const Order = mongoose.model("Order", OrderSchema);
 
 export default Order;
+
+
