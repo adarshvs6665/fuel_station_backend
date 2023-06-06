@@ -9,7 +9,10 @@ export const orderFetchController = async (req: Request, res: Response) => {
     console.log(userId);
 
     console.log("hit order");
+    console.log(userId);
     const orders = await Order.find({ userId: userId });
+    console.log(orders);
+    
     res.status(200).json(orders);
 };
 
@@ -17,6 +20,8 @@ export const orderGenerateController = async (req: Request, res: Response) => {
     const { cartData, position, userId } = req.body;
 
     console.log("hit");
+    
+    
 
     try {
         cartData.map((data: any) => {

@@ -131,6 +131,8 @@ export const pumpOwnerOrderFetchController = async (
             data: filteredArray,
         };
 
+        console.log(filteredArray);
+        
         res.status(200).json(response);
     } catch (error) {
         // Handle any errors that occur during the authentication process
@@ -162,6 +164,8 @@ export const pumpOwnerRejectOrderController = async (
             };
             res.status(409).json(response);
         } else {
+            const order = await Order.findOneAndUpdate({orderId}, {status: "REJECTED"})
+            order
             const rejectedOrder = new RejectedOrder({
                 orderId,
                 pumpOwnerId,

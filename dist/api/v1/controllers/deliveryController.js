@@ -98,11 +98,11 @@ const deliveryBoyOrdersFetchController = (req, res) => __awaiter(void 0, void 0,
                 pumpOwnerId: order.acceptedPumpId,
             });
             if (!order.deliveryAccepted) {
-                return Object.assign(Object.assign({}, order), { pickupLocation: pumpOwner === null || pumpOwner === void 0 ? void 0 : pumpOwner.location, acceptedByMe: false });
+                return Object.assign(Object.assign({}, order), { pickupLocation: pumpOwner === null || pumpOwner === void 0 ? void 0 : pumpOwner.location, acceptedByMe: false, userContact: "1223453321" });
             }
             else if (order.acceptedDeliveryBoyId == deliveryBoyId) {
                 acceptedFlag = true;
-                return Object.assign(Object.assign({}, order), { pickupLocation: pumpOwner === null || pumpOwner === void 0 ? void 0 : pumpOwner.location, acceptedByMe: true });
+                return Object.assign(Object.assign({}, order), { pickupLocation: pumpOwner === null || pumpOwner === void 0 ? void 0 : pumpOwner.location, acceptedByMe: true, userContact: "1223453321" });
             }
             else {
                 return;

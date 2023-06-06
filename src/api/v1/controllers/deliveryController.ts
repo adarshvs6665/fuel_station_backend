@@ -107,6 +107,7 @@ export const deliveryBoyOrdersFetchController = async (
                         ...order,
                         pickupLocation: pumpOwner?.location,
                         acceptedByMe: false,
+                        userContact: "1223453321"
                     };
                 } else if (order.acceptedDeliveryBoyId == deliveryBoyId) {
                     acceptedFlag = true;
@@ -114,6 +115,7 @@ export const deliveryBoyOrdersFetchController = async (
                         ...order,
                         pickupLocation: pumpOwner?.location,
                         acceptedByMe: true,
+                        userContact: "1223453321"
                     };
                 } else {
                     return;

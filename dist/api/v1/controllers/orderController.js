@@ -21,7 +21,9 @@ const orderFetchController = (req, res) => __awaiter(void 0, void 0, void 0, fun
     const { userId } = req.query;
     console.log(userId);
     console.log("hit order");
+    console.log(userId);
     const orders = yield Order_1.default.find({ userId: userId });
+    console.log(orders);
     res.status(200).json(orders);
 });
 exports.orderFetchController = orderFetchController;

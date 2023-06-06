@@ -127,6 +127,7 @@ const pumpOwnerOrderFetchController = (req, res) => __awaiter(void 0, void 0, vo
             message: "Fetched order successfully",
             data: filteredArray,
         };
+        console.log(filteredArray);
         res.status(200).json(response);
     }
     catch (error) {
@@ -154,6 +155,8 @@ const pumpOwnerRejectOrderController = (req, res) => __awaiter(void 0, void 0, v
             res.status(409).json(response);
         }
         else {
+            const order = yield Order_1.default.findOneAndUpdate({ orderId }, { status: "REJECTED" });
+            order;
             const rejectedOrder = new RejectedOrder_1.default({
                 orderId,
                 pumpOwnerId,
