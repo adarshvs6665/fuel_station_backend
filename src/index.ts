@@ -1,11 +1,11 @@
-import express, { Express } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import {
-    commonRouter,
-    deliveryRouter,
-    pumpRouter,
-    userRouter,
+  commonRouter,
+  deliveryRouter,
+  pumpRouter,
+  userRouter,
 } from "./api/v1/routes/router";
 import mongoose from "mongoose";
 import { dbConnection } from "./api/v1/db/db";
@@ -20,9 +20,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.use(
-    cors({
-        origin: "*",
-    })
+  cors({
+    origin: "*",
+  })
 );
 
 app.use("/api/v1/common", commonRouter);
@@ -31,9 +31,15 @@ app.use("/api/v1/pump", pumpRouter);
 app.use("/api/v1/delivery", deliveryRouter);
 
 app.get("/", (req, res) => {
-    res.send("Hello world");
+  res.send("Hello world");
 });
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
 app.listen(PORT, () => {
-    console.log(`⚡️ [server]: Server is running at http://localhost:${PORT}`);
-    dbConnection();
+  console.log(`⚡️ [server]: Server is running at http://localhost:${PORT}`);
+  dbConnection();
 });
